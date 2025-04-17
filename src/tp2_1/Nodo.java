@@ -1,6 +1,6 @@
 package tp2_1;
 
-import java.security.PublicKey;
+import java.util.ArrayList;
 
 public class Nodo {
     private Integer valor;
@@ -58,17 +58,18 @@ public class Nodo {
     public boolean isEmpty(){
         return (izquierda==null&&derecha==null);
     }
-    public void insertarElement(Integer elemento){
+    public void insertarElemento(Integer elemento){
         if (valor==null){
             valor=elemento;
         }
         if (elemento< this.getIzquierda()) {
-            izquierda.insertarElement(elemento);
+            izquierda.insertarElemento(elemento);
         }else if(elemento> this.getDerecha()){
-            derecha.insertarElement(elemento);
+            derecha.insertarElemento(elemento);
         }
     }
-    public Integer acomodarPorNMI(){
+    //nmi= nodo mas a la izquierda
+    public Integer acomodarNMI(){
         return derecha.getNMI();
     }
     public Integer getNMI(){
@@ -83,10 +84,50 @@ public class Nodo {
             if (isTerminalNodo()){
                 valor=null;
             }
-            valor=acomodarPorNMI();
+            valor=acomodarNMI();
         }
         return false;
     }
-
-
+    public Integer getSumaRama(){
+        Integer sumaRama=valor;
+        if (izquierda!=null){
+            sumaRama=izquierda.getSumaRama();
+        }
+        if (derecha!=null){
+            sumaRama+=derecha.getSumaRama();
+        }
+        return sumaRama;
+    }
+    public ArrayList<Integer> getHojasMayor(Integer k){
+        if (valor<k){
+            return derecha.getHojasMayor(k);
+        }else if(this.isTerminalNodo()&& valor>k){
+            return  new ArrayList<>(valor);
+        }
+        else {
+            ArrayList<Integer> salida = new ArrayList<>();
+            if (izquierda.valor>=k){
+                if (izquierda.isTerminalNodo()){
+                    salida.add(izquierda.getValor());
+                }else {
+                    salida.addAll(izquierda.getHojasMayor(k));
+                }
+            }
+            if (derecha.isTerminalNodo()){
+                salida.add(derecha.getValor());
+            }else {
+                salida.addAll(derecha.getHojasMayor(k));
+            }
+            return salida;
+        }
+    }
+    public void setValorInterno(){
+        if (izquierda==null && derecha!=null){
+            valor=derecha.getValor();
+        }else if (izquierda!=null && derecha==null){
+            valor=izquierda.getValor();
+        }else {
+            valor = derecha.getValor() - izquierda.getValor();
+        }
+    }
 }
