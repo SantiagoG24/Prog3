@@ -33,6 +33,18 @@ public class HashTableConCrecimiento {
     }
     private void rehash() {
         int newm= nextNumPrimo(m*2);
+        List<Integer>[] oldtable=tabla;
+        tabla = new List[newm];
+        m=newm;
+        tamanio=0;
+        for (int i = 0; i < newm; i++) {
+            tabla[i]= new LinkedList<>();
+        }
+        for (List<Integer> l : oldtable) {
+            for (Integer key : l) {
+                insert(key);
+            }
+        }
     }
     private int nextNumPrimo(int n) {
         while (!isPrimo(n))n++;
