@@ -40,7 +40,7 @@ public class SumatoriaConjuntos {
             int numero = numeros.get(i);
             solucionActual.add(numero);
             // NOTA: usamos el mismo índice para permitir repetir
-            getBuscarTodasLasSolucionesrec(total, solucionActual,indice);
+            getBuscarTodasLasSolucionesrec(total, solucionActual,i);
             solucionActual.remove(solucionActual.size() - 1); // backtrack
         }
 
